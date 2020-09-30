@@ -34,10 +34,10 @@ var _ server.Option
 // Client API for Users service
 
 type UsersService interface {
-	// 获取用户绑定账号信息
-	Get(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error)
+	// 获取用户绑定账号列表
+	Get(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 	// 删除绑定用户
-	Delete(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error)
+	Delete(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 }
 
 type usersService struct {
@@ -52,7 +52,7 @@ func NewUsersService(name string, c client.Client) UsersService {
 	}
 }
 
-func (c *usersService) Get(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error) {
+func (c *usersService) Get(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
 	req := c.c.NewRequest(c.name, "Users.Get", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -62,7 +62,7 @@ func (c *usersService) Get(ctx context.Context, in *User, opts ...client.CallOpt
 	return out, nil
 }
 
-func (c *usersService) Delete(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error) {
+func (c *usersService) Delete(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
 	req := c.c.NewRequest(c.name, "Users.Delete", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -75,16 +75,16 @@ func (c *usersService) Delete(ctx context.Context, in *User, opts ...client.Call
 // Server API for Users service
 
 type UsersHandler interface {
-	// 获取用户绑定账号信息
-	Get(context.Context, *User, *Response) error
+	// 获取用户绑定账号列表
+	Get(context.Context, *Request, *Response) error
 	// 删除绑定用户
-	Delete(context.Context, *User, *Response) error
+	Delete(context.Context, *Request, *Response) error
 }
 
 func RegisterUsersHandler(s server.Server, hdlr UsersHandler, opts ...server.HandlerOption) error {
 	type users interface {
-		Get(ctx context.Context, in *User, out *Response) error
-		Delete(ctx context.Context, in *User, out *Response) error
+		Get(ctx context.Context, in *Request, out *Response) error
+		Delete(ctx context.Context, in *Request, out *Response) error
 	}
 	type Users struct {
 		users
@@ -97,10 +97,10 @@ type usersHandler struct {
 	UsersHandler
 }
 
-func (h *usersHandler) Get(ctx context.Context, in *User, out *Response) error {
+func (h *usersHandler) Get(ctx context.Context, in *Request, out *Response) error {
 	return h.UsersHandler.Get(ctx, in, out)
 }
 
-func (h *usersHandler) Delete(ctx context.Context, in *User, out *Response) error {
+func (h *usersHandler) Delete(ctx context.Context, in *Request, out *Response) error {
 	return h.UsersHandler.Delete(ctx, in, out)
 }

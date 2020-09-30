@@ -18,8 +18,14 @@ message Request {
     string callback = 4;
 }
 
+message User {
+    string id = 1;
+    string name = 2;
+    string token = 3;
+}
+
 message Response {
-    string token = 1;
+    repeated User users = 1;
     bool valid = 2;
     string url = 3;
 }

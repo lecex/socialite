@@ -10,23 +10,24 @@ service Users {
     // 微服务之间调用
 }
 
-message BuildUser {
-    string id = 1;
-    string userid = 2;
-    string token = 3;
-}
 message User {
+    string id = 1;
+    string name = 2;
+    string socialite_id = 3;
+}
+
+message SocialiteUser {
     string id = 1;
     string openid = 2;
     string origin = 3;
     string session = 4;
-
-    string created_at = 5;
-    string updated_at = 6;
+    repeated User users = 5;
+    string created_at = 6;
+    string updated_at = 7;
 }
 
 message Request {
-    User user=1;
+    SocialiteUser socialiteUser = 1;
 }
 
 message Response {
