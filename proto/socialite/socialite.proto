@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package socialite;
+
+service Socialite {
+    // 小程序获取授权
+    rpc Auth(Request) returns (Response) {}
+    // 授权网址
+    rpc AuthURL(Request) returns (Response) {}
+    rpc Handle(Request) returns (Response) {}
+}
+
+
+message Request {
+    string driver = 1;
+    string code = 2;
+    string state = 3;
+    string callback = 4;
+}
+
+message Response {
+    string token = 1;
+    bool valid = 2;
+    string url = 3;
+}
