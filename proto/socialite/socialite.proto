@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package socialite;
 
-service Socialite {
+service Socialites {
     // 小程序获取授权
     rpc Auth(Request) returns (Response) {}
     // 授权网址
@@ -11,11 +11,15 @@ service Socialite {
 }
 
 
-message Request {
+message Socialite {
     string driver = 1;
     string code = 2;
     string state = 3;
     string callback = 4;
+}
+
+message Request {
+    Socialite socialite = 1;
 }
 
 message User {

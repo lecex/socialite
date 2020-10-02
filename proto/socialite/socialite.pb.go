@@ -22,18 +22,83 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type Request struct {
+type Socialite struct {
 	Driver   string `protobuf:"bytes,1,opt,name=driver,proto3" json:"driver,omitempty"`
 	Code     string `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
 	State    string `protobuf:"bytes,3,opt,name=state,proto3" json:"state,omitempty"`
 	Callback string `protobuf:"bytes,4,opt,name=callback,proto3" json:"callback,omitempty"`
 }
 
+func (m *Socialite) Reset()         { *m = Socialite{} }
+func (m *Socialite) String() string { return proto.CompactTextString(m) }
+func (*Socialite) ProtoMessage()    {}
+func (*Socialite) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4e1f10f4ce6750b2, []int{0}
+}
+func (m *Socialite) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Socialite) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Socialite.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Socialite) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Socialite.Merge(m, src)
+}
+func (m *Socialite) XXX_Size() int {
+	return m.Size()
+}
+func (m *Socialite) XXX_DiscardUnknown() {
+	xxx_messageInfo_Socialite.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Socialite proto.InternalMessageInfo
+
+func (m *Socialite) GetDriver() string {
+	if m != nil {
+		return m.Driver
+	}
+	return ""
+}
+
+func (m *Socialite) GetCode() string {
+	if m != nil {
+		return m.Code
+	}
+	return ""
+}
+
+func (m *Socialite) GetState() string {
+	if m != nil {
+		return m.State
+	}
+	return ""
+}
+
+func (m *Socialite) GetCallback() string {
+	if m != nil {
+		return m.Callback
+	}
+	return ""
+}
+
+type Request struct {
+	Socialite *Socialite `protobuf:"bytes,1,opt,name=socialite,proto3" json:"socialite,omitempty"`
+}
+
 func (m *Request) Reset()         { *m = Request{} }
 func (m *Request) String() string { return proto.CompactTextString(m) }
 func (*Request) ProtoMessage()    {}
 func (*Request) Descriptor() ([]byte, []int) {
-	return fileDescriptor_4e1f10f4ce6750b2, []int{0}
+	return fileDescriptor_4e1f10f4ce6750b2, []int{1}
 }
 func (m *Request) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -62,32 +127,11 @@ func (m *Request) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Request proto.InternalMessageInfo
 
-func (m *Request) GetDriver() string {
+func (m *Request) GetSocialite() *Socialite {
 	if m != nil {
-		return m.Driver
+		return m.Socialite
 	}
-	return ""
-}
-
-func (m *Request) GetCode() string {
-	if m != nil {
-		return m.Code
-	}
-	return ""
-}
-
-func (m *Request) GetState() string {
-	if m != nil {
-		return m.State
-	}
-	return ""
-}
-
-func (m *Request) GetCallback() string {
-	if m != nil {
-		return m.Callback
-	}
-	return ""
+	return nil
 }
 
 type User struct {
@@ -100,7 +144,7 @@ func (m *User) Reset()         { *m = User{} }
 func (m *User) String() string { return proto.CompactTextString(m) }
 func (*User) ProtoMessage()    {}
 func (*User) Descriptor() ([]byte, []int) {
-	return fileDescriptor_4e1f10f4ce6750b2, []int{1}
+	return fileDescriptor_4e1f10f4ce6750b2, []int{2}
 }
 func (m *User) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -160,7 +204,7 @@ func (m *Response) Reset()         { *m = Response{} }
 func (m *Response) String() string { return proto.CompactTextString(m) }
 func (*Response) ProtoMessage()    {}
 func (*Response) Descriptor() ([]byte, []int) {
-	return fileDescriptor_4e1f10f4ce6750b2, []int{2}
+	return fileDescriptor_4e1f10f4ce6750b2, []int{3}
 }
 func (m *Response) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -211,6 +255,7 @@ func (m *Response) GetUrl() string {
 }
 
 func init() {
+	proto.RegisterType((*Socialite)(nil), "socialite.Socialite")
 	proto.RegisterType((*Request)(nil), "socialite.Request")
 	proto.RegisterType((*User)(nil), "socialite.User")
 	proto.RegisterType((*Response)(nil), "socialite.Response")
@@ -219,30 +264,31 @@ func init() {
 func init() { proto.RegisterFile("proto/socialite/socialite.proto", fileDescriptor_4e1f10f4ce6750b2) }
 
 var fileDescriptor_4e1f10f4ce6750b2 = []byte{
-	// 305 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x91, 0xbd, 0x4e, 0xfb, 0x30,
-	0x14, 0xc5, 0xe3, 0x36, 0xfd, 0xba, 0x7f, 0xe9, 0x0f, 0xba, 0x20, 0x14, 0x75, 0x08, 0x55, 0x24,
-	0xa4, 0x4e, 0x45, 0xb4, 0x3c, 0x00, 0x30, 0x31, 0x30, 0x05, 0x75, 0x60, 0x74, 0x93, 0x2b, 0xb0,
-	0x6a, 0xe2, 0x62, 0x3b, 0x7d, 0x0e, 0x5e, 0x83, 0x37, 0x61, 0xec, 0xc8, 0x88, 0xda, 0x17, 0x41,
-	0x76, 0xd2, 0x16, 0xc6, 0x6e, 0xe7, 0x9c, 0xab, 0xf3, 0xbb, 0xfe, 0x80, 0xf3, 0x85, 0x56, 0x56,
-	0x5d, 0x1a, 0x95, 0x09, 0x2e, 0x85, 0xa5, 0xbd, 0x1a, 0xf9, 0x09, 0xf6, 0x76, 0x41, 0xf2, 0x0c,
-	0x9d, 0x94, 0xde, 0x4a, 0x32, 0x16, 0xcf, 0xa0, 0x9d, 0x6b, 0xb1, 0x24, 0x1d, 0xb1, 0x01, 0x1b,
-	0xf6, 0xd2, 0xda, 0x21, 0x42, 0x98, 0xa9, 0x9c, 0xa2, 0x86, 0x4f, 0xbd, 0xc6, 0x53, 0x68, 0x19,
-	0xcb, 0x2d, 0x45, 0x4d, 0x1f, 0x56, 0x06, 0xfb, 0xd0, 0xcd, 0xb8, 0x94, 0x33, 0x9e, 0xcd, 0xa3,
-	0xd0, 0x0f, 0x76, 0x3e, 0xb9, 0x81, 0x70, 0x6a, 0x48, 0xe3, 0x7f, 0x68, 0x88, 0xbc, 0xde, 0xd0,
-	0x10, 0xb9, 0xa3, 0x17, 0xfc, 0x75, 0x47, 0x77, 0xda, 0xd1, 0xad, 0x9a, 0x53, 0xb1, 0xa5, 0x7b,
-	0x93, 0x3c, 0x41, 0x37, 0x25, 0xb3, 0x50, 0x85, 0x21, 0xbc, 0x80, 0x56, 0x69, 0x48, 0x9b, 0x88,
-	0x0d, 0x9a, 0xc3, 0x7f, 0xe3, 0xa3, 0xd1, 0xfe, 0x8a, 0x6e, 0x4b, 0x5a, 0x4d, 0x1d, 0x68, 0xc9,
-	0xa5, 0xc8, 0x3d, 0xbd, 0x9b, 0x56, 0x06, 0x8f, 0xa1, 0x59, 0x6a, 0x59, 0xc3, 0x9d, 0x1c, 0x7f,
-	0x30, 0xe8, 0x3d, 0x6e, 0x09, 0x78, 0x05, 0xe1, 0x6d, 0x69, 0x5f, 0x10, 0x7f, 0x51, 0xeb, 0x47,
-	0xea, 0x9f, 0xfc, 0xc9, 0xaa, 0xd3, 0x24, 0x01, 0x5e, 0x43, 0xc7, 0x55, 0xa6, 0xe9, 0xc3, 0x21,
-	0xad, 0x09, 0xb4, 0xef, 0x79, 0x91, 0x4b, 0x3a, 0xa0, 0x74, 0x17, 0x7d, 0xae, 0x63, 0xb6, 0x5a,
-	0xc7, 0xec, 0x7b, 0x1d, 0xb3, 0xf7, 0x4d, 0x1c, 0xac, 0x36, 0x71, 0xf0, 0xb5, 0x89, 0x83, 0x59,
-	0xdb, 0xff, 0xee, 0xe4, 0x27, 0x00, 0x00, 0xff, 0xff, 0xe8, 0x5a, 0x05, 0xf3, 0x00, 0x02, 0x00,
-	0x00,
+	// 324 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0xcf, 0x4a, 0xc3, 0x40,
+	0x10, 0xc6, 0xb3, 0x6d, 0xfa, 0x6f, 0x0a, 0x2a, 0x63, 0x91, 0xd0, 0x43, 0x2c, 0x01, 0xa1, 0xa7,
+	0x8a, 0xa9, 0x57, 0x41, 0x3d, 0x79, 0xf0, 0xb4, 0xd2, 0x83, 0xc7, 0x6d, 0x32, 0xe0, 0xd2, 0x98,
+	0xd4, 0xec, 0xa6, 0xcf, 0xe1, 0x73, 0xf8, 0x24, 0x1e, 0x7b, 0xf4, 0x28, 0xed, 0x8b, 0xc8, 0x6e,
+	0xd2, 0xb4, 0x1e, 0x7b, 0xfb, 0xbe, 0x6f, 0x98, 0x6f, 0x7e, 0x0b, 0x0b, 0x97, 0xcb, 0x3c, 0xd3,
+	0xd9, 0xb5, 0xca, 0x22, 0x29, 0x12, 0xa9, 0x69, 0xaf, 0x26, 0x76, 0x82, 0xbd, 0x3a, 0x08, 0x24,
+	0xf4, 0x5e, 0x76, 0x06, 0x2f, 0xa0, 0x1d, 0xe7, 0x72, 0x45, 0xb9, 0xc7, 0x46, 0x6c, 0xdc, 0xe3,
+	0x95, 0x43, 0x04, 0x37, 0xca, 0x62, 0xf2, 0x1a, 0x36, 0xb5, 0x1a, 0x07, 0xd0, 0x52, 0x5a, 0x68,
+	0xf2, 0x9a, 0x36, 0x2c, 0x0d, 0x0e, 0xa1, 0x1b, 0x89, 0x24, 0x99, 0x8b, 0x68, 0xe1, 0xb9, 0x76,
+	0x50, 0xfb, 0xe0, 0x0e, 0x3a, 0x9c, 0x3e, 0x0a, 0x52, 0x1a, 0x43, 0xd8, 0x23, 0xd8, 0x5b, 0xfd,
+	0x70, 0x30, 0xd9, 0x53, 0xd6, 0x44, 0xfc, 0x80, 0xf4, 0x1e, 0xdc, 0x99, 0xa2, 0x1c, 0x4f, 0xa0,
+	0x21, 0xe3, 0x0a, 0xb0, 0x21, 0x63, 0x03, 0x97, 0x8a, 0xf7, 0x1a, 0xce, 0x68, 0x03, 0xa7, 0xb3,
+	0x05, 0xa5, 0x3b, 0x38, 0x6b, 0x82, 0x57, 0xe8, 0x72, 0x52, 0xcb, 0x2c, 0x55, 0x84, 0x57, 0xd0,
+	0x2a, 0x14, 0xe5, 0xca, 0x63, 0xa3, 0xe6, 0xb8, 0x1f, 0x9e, 0x1e, 0x5c, 0x37, 0x57, 0x78, 0x39,
+	0x35, 0x45, 0x2b, 0x91, 0xc8, 0xd8, 0xb6, 0x77, 0x79, 0x69, 0xf0, 0x0c, 0x9a, 0x45, 0x9e, 0x54,
+	0xe5, 0x46, 0x86, 0x5f, 0x0c, 0xa0, 0xa6, 0x56, 0x78, 0x03, 0xee, 0x43, 0xa1, 0xdf, 0x10, 0x0f,
+	0x6a, 0xab, 0xb7, 0x0f, 0xcf, 0xff, 0x65, 0x25, 0x4e, 0xe0, 0xe0, 0x2d, 0x74, 0xcc, 0xca, 0x8c,
+	0x3f, 0x1f, 0xb3, 0x35, 0x85, 0xf6, 0x93, 0x48, 0xe3, 0x84, 0x8e, 0x58, 0x7a, 0xf4, 0xbe, 0x37,
+	0x3e, 0x5b, 0x6f, 0x7c, 0xf6, 0xbb, 0xf1, 0xd9, 0xe7, 0xd6, 0x77, 0xd6, 0x5b, 0xdf, 0xf9, 0xd9,
+	0xfa, 0xce, 0xbc, 0x6d, 0xff, 0xc7, 0xf4, 0x2f, 0x00, 0x00, 0xff, 0xff, 0x5e, 0x8e, 0x4d, 0xb8,
+	0x42, 0x02, 0x00, 0x00,
 }
 
-func (m *Request) Marshal() (dAtA []byte, err error) {
+func (m *Socialite) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -252,12 +298,12 @@ func (m *Request) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Request) MarshalTo(dAtA []byte) (int, error) {
+func (m *Socialite) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Request) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Socialite) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -287,6 +333,41 @@ func (m *Request) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.Driver)
 		copy(dAtA[i:], m.Driver)
 		i = encodeVarintSocialite(dAtA, i, uint64(len(m.Driver)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Request) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Request) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Request) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Socialite != nil {
+		{
+			size, err := m.Socialite.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintSocialite(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0xa
 	}
@@ -402,7 +483,7 @@ func encodeVarintSocialite(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *Request) Size() (n int) {
+func (m *Socialite) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -422,6 +503,19 @@ func (m *Request) Size() (n int) {
 	}
 	l = len(m.Callback)
 	if l > 0 {
+		n += 1 + l + sovSocialite(uint64(l))
+	}
+	return n
+}
+
+func (m *Request) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Socialite != nil {
+		l = m.Socialite.Size()
 		n += 1 + l + sovSocialite(uint64(l))
 	}
 	return n
@@ -476,7 +570,7 @@ func sovSocialite(x uint64) (n int) {
 func sozSocialite(x uint64) (n int) {
 	return sovSocialite(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *Request) Unmarshal(dAtA []byte) error {
+func (m *Socialite) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -499,10 +593,10 @@ func (m *Request) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Request: wiretype end group for non-group")
+			return fmt.Errorf("proto: Socialite: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Request: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Socialite: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -632,6 +726,95 @@ func (m *Request) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Callback = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipSocialite(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthSocialite
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthSocialite
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Request) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowSocialite
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Request: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Request: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Socialite", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSocialite
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthSocialite
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthSocialite
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Socialite == nil {
+				m.Socialite = &Socialite{}
+			}
+			if err := m.Socialite.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

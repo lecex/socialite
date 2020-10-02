@@ -31,9 +31,9 @@ var _ context.Context
 var _ client.Option
 var _ server.Option
 
-// Client API for Socialite service
+// Client API for Socialites service
 
-type SocialiteService interface {
+type SocialitesService interface {
 	// 小程序获取授权
 	Auth(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 	// 授权网址
@@ -41,20 +41,20 @@ type SocialiteService interface {
 	Handle(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 }
 
-type socialiteService struct {
+type socialitesService struct {
 	c    client.Client
 	name string
 }
 
-func NewSocialiteService(name string, c client.Client) SocialiteService {
-	return &socialiteService{
+func NewSocialitesService(name string, c client.Client) SocialitesService {
+	return &socialitesService{
 		c:    c,
 		name: name,
 	}
 }
 
-func (c *socialiteService) Auth(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "Socialite.Auth", in)
+func (c *socialitesService) Auth(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Socialites.Auth", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -63,8 +63,8 @@ func (c *socialiteService) Auth(ctx context.Context, in *Request, opts ...client
 	return out, nil
 }
 
-func (c *socialiteService) AuthURL(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "Socialite.AuthURL", in)
+func (c *socialitesService) AuthURL(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Socialites.AuthURL", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -73,8 +73,8 @@ func (c *socialiteService) AuthURL(ctx context.Context, in *Request, opts ...cli
 	return out, nil
 }
 
-func (c *socialiteService) Handle(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "Socialite.Handle", in)
+func (c *socialitesService) Handle(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Socialites.Handle", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -83,9 +83,9 @@ func (c *socialiteService) Handle(ctx context.Context, in *Request, opts ...clie
 	return out, nil
 }
 
-// Server API for Socialite service
+// Server API for Socialites service
 
-type SocialiteHandler interface {
+type SocialitesHandler interface {
 	// 小程序获取授权
 	Auth(context.Context, *Request, *Response) error
 	// 授权网址
@@ -93,31 +93,31 @@ type SocialiteHandler interface {
 	Handle(context.Context, *Request, *Response) error
 }
 
-func RegisterSocialiteHandler(s server.Server, hdlr SocialiteHandler, opts ...server.HandlerOption) error {
-	type socialite interface {
+func RegisterSocialitesHandler(s server.Server, hdlr SocialitesHandler, opts ...server.HandlerOption) error {
+	type socialites interface {
 		Auth(ctx context.Context, in *Request, out *Response) error
 		AuthURL(ctx context.Context, in *Request, out *Response) error
 		Handle(ctx context.Context, in *Request, out *Response) error
 	}
-	type Socialite struct {
-		socialite
+	type Socialites struct {
+		socialites
 	}
-	h := &socialiteHandler{hdlr}
-	return s.Handle(s.NewHandler(&Socialite{h}, opts...))
+	h := &socialitesHandler{hdlr}
+	return s.Handle(s.NewHandler(&Socialites{h}, opts...))
 }
 
-type socialiteHandler struct {
-	SocialiteHandler
+type socialitesHandler struct {
+	SocialitesHandler
 }
 
-func (h *socialiteHandler) Auth(ctx context.Context, in *Request, out *Response) error {
-	return h.SocialiteHandler.Auth(ctx, in, out)
+func (h *socialitesHandler) Auth(ctx context.Context, in *Request, out *Response) error {
+	return h.SocialitesHandler.Auth(ctx, in, out)
 }
 
-func (h *socialiteHandler) AuthURL(ctx context.Context, in *Request, out *Response) error {
-	return h.SocialiteHandler.AuthURL(ctx, in, out)
+func (h *socialitesHandler) AuthURL(ctx context.Context, in *Request, out *Response) error {
+	return h.SocialitesHandler.AuthURL(ctx, in, out)
 }
 
-func (h *socialiteHandler) Handle(ctx context.Context, in *Request, out *Response) error {
-	return h.SocialiteHandler.Handle(ctx, in, out)
+func (h *socialitesHandler) Handle(ctx context.Context, in *Request, out *Response) error {
+	return h.SocialitesHandler.Handle(ctx, in, out)
 }
