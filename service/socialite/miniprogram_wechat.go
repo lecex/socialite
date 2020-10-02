@@ -1,8 +1,6 @@
 package socialite
 
 import (
-	"fmt"
-
 	"github.com/bigrocs/wechat"
 	"github.com/bigrocs/wechat/requests"
 	"github.com/clbanning/mxj"
@@ -34,7 +32,6 @@ func (srv *MiniprogramWechat) request(request *requests.CommonRequest) (req mxj.
 		return req, err
 	}
 	req, err = response.GetHttpContentMap()
-	fmt.Println(client, req)
 	if err != nil {
 		return req, err
 	}
@@ -47,6 +44,6 @@ func (srv *MiniprogramWechat) NewClient() (client *wechat.Client) {
 	c := client.Config
 	c.AppId = srv.AppId
 	c.Secret = srv.Secret
-	// c.SessionKey = srv.SessionKey
+	c.SessionKey = srv.SessionKey
 	return client
 }

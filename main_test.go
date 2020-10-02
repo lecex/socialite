@@ -14,7 +14,7 @@ func TestSocialiteAuth(t *testing.T) {
 	req := &socialPB.Request{
 		Socialite: &socialPB.Socialite{
 			Driver: "miniprogram_wechat",
-			Code:   "071mGp0w3DdE3V23KP0w37rpRM0mGp0d",
+			Code:   "0011Wc000kc7oK1VQx100mU2bM11Wc0G",
 		},
 	}
 	res := &socialPB.Response{}
