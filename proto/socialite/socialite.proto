@@ -20,12 +20,14 @@ message Socialite {
 
 message Request {
     Socialite socialite = 1;
+    User user = 2;
 }
 
 message User {
     string id = 1;
     string name = 2;
-    string token = 3;
+    string avatar = 3;
+    string token = 4;
 }
 
 message Response {

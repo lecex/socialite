@@ -16,6 +16,7 @@ api:
 proto:
 	protoc -I . --micro_out=. --gogofaster_out=. proto/socialite/socialite.proto
 	protoc -I . --micro_out=. --gogofaster_out=. proto/user/user.proto
+	protoc -I . --micro_out=. --gogofaster_out=. proto/config/config.proto
 
 .PHONY: docker
 docker:
