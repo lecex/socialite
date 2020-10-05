@@ -44,7 +44,7 @@ func (repo *UserRepository) Exist(user *pb.SocialiteUser) bool {
 		}
 	}
 	if user.Origin != "" {
-		repo.DB.Model(&user).Where("origin = ?", user.Origin).Where("openid = ?", user.UserId).Count(&count)
+		repo.DB.Model(&user).Where("origin = ?", user.Origin).Where("oauth_id = ?", user.OauthId).Count(&count)
 		if count > 0 {
 			return true
 		}
@@ -59,8 +59,8 @@ func (repo *UserRepository) Get(user *pb.SocialiteUser) (*pb.SocialiteUser, erro
 			return nil, err
 		}
 	}
-	if user.UserId != "" {
-		if err := repo.DB.Model(&user).Where("origin = ?", user.Origin).Where("user_id = ?", user.UserId).Find(&user).Error; err != nil {
+	if user.OauthId != "" {
+		if err := repo.DB.Model(&user).Where("origin = ?", user.Origin).Where("oauth_id = ?", user.OauthId).Find(&user).Error; err != nil {
 			return nil, err
 		}
 	}

@@ -36,11 +36,10 @@ func socialiteUser() {
 			id varchar(36) NOT NULL,
 			origin varchar(64) DEFAULT NULL,
 			oauth_id varchar(64) DEFAULT NULL,
-			user_id varchar(36) NOT NULL,
 			created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (id),
-			UNIQUE KEY origin_openid (origin,openid)
+			UNIQUE KEY origin_oauth_id (origin,oauth_id)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		`)
 	}
@@ -51,12 +50,11 @@ func user() {
 	user := &userPD.User{}
 	if !db.DB.HasTable(&user) {
 		db.DB.Exec(`
-			CREATE TABLE socialite_users (
+			CREATE TABLE users (
 			id varchar(36) NOT NULL,
 			name varchar(64) DEFAULT NULL,
 			socialite_id varchar(36) NOT NULL,
-			PRIMARY KEY (id),
-			UNIQUE KEY origin_openid (origin,openid)
+			PRIMARY KEY (id)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		`)
 	}
