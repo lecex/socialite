@@ -111,6 +111,7 @@ func (srv *Socialite) getConfig() (*conPB.Config, error) {
 	return res.Config, err
 }
 
+// 微信小程序 获取 oauthID
 func (srv *Socialite) miniprogramWechat(code string) (oauthID string, err error) {
 	con, err := srv.getConfig()
 	if err != nil {
