@@ -7,6 +7,7 @@ import (
 	"time"
 
 	client "github.com/lecex/core/client"
+	authSrvPB "github.com/lecex/user/proto/auth"
 	userSrvPB "github.com/lecex/user/proto/user"
 
 	conPB "github.com/lecex/socialite/proto/config"
@@ -32,18 +33,16 @@ func (srv *Socialite) Auth(ctx context.Context, req *pb.Request, res *pb.Respons
 	switch socialite.Driver {
 	case "miniprogram_wechat":
 		oauthID, err = srv.miniprogramWechat(socialite.Code)
-		fmt.Println(oauthID, err)
 	case "wechat":
 	default:
 		err = fmt.Errorf("不支持 %s 登录", socialite.Driver)
 	}
-
 	if oauthID != "" {
 		users, err = srv.getBuildUser(oauthID, socialite.Driver, req.User)
 	} else {
 		err = fmt.Errorf("获取授权用户 Id 失败")
 	}
-	fmt.Println("users**********", users, err)
+	res.Users = users
 	return err
 }
 
@@ -53,10 +52,8 @@ func (srv *Socialite) getBuildUser(oauthID string, origin string, user *pb.User)
 		OauthId: oauthID,
 		Origin:  origin,
 	}
-	if srv.Repo.Exist(u) {
-		fmt.Println(1, srv.Repo.Exist(u))
-	} else {
-		// 无用户先用过用户服务创建用户
+	if !srv.Repo.Exist(u) {
+		// 无用户先通过用户服务创建用户
 		req := &userSrvPB.Request{
 			User: &userSrvPB.User{
 				Name:     user.Name,
@@ -67,12 +64,43 @@ func (srv *Socialite) getBuildUser(oauthID string, origin string, user *pb.User)
 		}
 		res := &userSrvPB.Response{}
 		err = client.Call(context.TODO(), srv.ServiceName, "Users.Create", req, res)
-		fmt.Println(2, req, res, err)
+		if err != nil {
+			return nil, err
+		}
+		u.Users = append(u.Users, &userPB.User{
+			Id:   res.User.Id,
+			Name: res.User.Name,
+		})
+		_, err = srv.Repo.Create(u)
+		if err != nil {
+			return nil, err
+		}
 	}
-	fmt.Println(3, u, user)
-
-	fmt.Println("||||||||||\\\\\\\\\\\\ ", oauthID, origin, u)
-	return
+	// 获取所有关联用户
+	socialiteUser, err := srv.Repo.Get(u)
+	if err != nil {
+		return nil, err
+	}
+	// 获取关联用户token
+	for _, user := range socialiteUser.Users {
+		// 无用户先通过用户服务创建用户
+		req := &authSrvPB.Request{
+			User: &authSrvPB.User{
+				Id: user.Id,
+			},
+		}
+		res := &authSrvPB.Response{}
+		err = client.Call(context.TODO(), srv.ServiceName, "Auth.AuthById", req, res)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, &pb.User{
+			Id:    user.Id,
+			Name:  user.Name,
+			Token: res.Token,
+		})
+	}
+	return users, nil
 }
 
 // getConfig 初始化配置等

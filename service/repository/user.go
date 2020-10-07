@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 	// 公共引入
+
 	pb "github.com/lecex/socialite/proto/user"
 	"github.com/micro/go-micro/v2/util/log"
 
@@ -53,18 +54,30 @@ func (repo *UserRepository) Exist(user *pb.SocialiteUser) bool {
 }
 
 // Get 获取用户信息
-func (repo *UserRepository) Get(user *pb.SocialiteUser) (*pb.SocialiteUser, error) {
-	if user.Id != "" {
-		if err := repo.DB.Model(&user).Where("id = ?", user.Id).Find(&user).Error; err != nil {
+func (repo *UserRepository) Get(socialiteUser *pb.SocialiteUser) (*pb.SocialiteUser, error) {
+	users := []*pb.User{}
+	if socialiteUser.Id != "" {
+		if err := repo.DB.Model(&socialiteUser).Where("id = ?", socialiteUser.Id).Find(&socialiteUser).Error; err != nil {
 			return nil, err
 		}
-	}
-	if user.OauthId != "" {
-		if err := repo.DB.Model(&user).Where("origin = ?", user.Origin).Where("oauth_id = ?", user.OauthId).Find(&user).Error; err != nil {
-			return nil, err
+		if err := repo.DB.Model(&socialiteUser).Related(users).Error; err != nil {
+			if err.Error() != "record not found" {
+				return nil, err
+			}
 		}
 	}
-	return user, nil
+	if socialiteUser.OauthId != "" {
+		if err := repo.DB.Model(&socialiteUser).Where("origin = ?", socialiteUser.Origin).Where("oauth_id = ?", socialiteUser.OauthId).Find(&socialiteUser).Error; err != nil {
+			return nil, err
+		}
+		if err := repo.DB.Model(&socialiteUser).Related(&users).Error; err != nil {
+			if err.Error() != "record not found" {
+				return nil, err
+			}
+		}
+	}
+	socialiteUser.Users = users
+	return socialiteUser, nil
 }
 
 // Create 创建用户
@@ -76,6 +89,7 @@ func (repo *UserRepository) Create(user *pb.SocialiteUser) (*pb.SocialiteUser, e
 	err := repo.DB.Create(user).Error
 	if err != nil {
 		// 写入数据库未知失败记录
+		fmt.Println(err)
 		log.Log(err)
 		return user, fmt.Errorf("注册用户失败")
 	}

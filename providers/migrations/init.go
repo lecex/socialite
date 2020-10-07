@@ -53,7 +53,7 @@ func user() {
 			CREATE TABLE users (
 			id varchar(36) NOT NULL,
 			name varchar(64) DEFAULT NULL,
-			socialite_id varchar(36) NOT NULL,
+			socialite_user_id varchar(36) NOT NULL,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		`)
