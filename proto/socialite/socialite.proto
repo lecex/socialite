@@ -5,6 +5,7 @@ package socialite;
 service Socialites {
     // 小程序获取授权
     rpc Auth(Request) returns (Response) {}
+    rpc Register(Request) returns (Response) {} // 授权后注册【可用于增加新账号】
     // 授权网址
     rpc AuthURL(Request) returns (Response) {}
     rpc Handle(Request) returns (Response) {}
@@ -20,7 +21,8 @@ message Socialite {
 
 message Request {
     Socialite socialite = 1;
-    User user = 2;
+    string uuid = 2; // 1、授权未注册用户返回唯一识别标识，用于下次注册获取用户相关信息
+    User user = 3;
 }
 
 message User {
@@ -31,7 +33,8 @@ message User {
 }
 
 message Response {
-    repeated User users = 1;
-    bool valid = 2;
-    string url = 3;
+    bool valid = 1;
+    repeated User users = 2;
+    string uuid = 3;
+    string url = 4;
 }

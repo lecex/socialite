@@ -6,18 +6,23 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/clbanning/mxj"
 	client "github.com/lecex/core/client"
 	authSrvPB "github.com/lecex/user/proto/auth"
-	userSrvPB "github.com/lecex/user/proto/user"
+	uuid "github.com/satori/go.uuid"
 
 	conPB "github.com/lecex/socialite/proto/config"
 	pb "github.com/lecex/socialite/proto/socialite"
 	userPB "github.com/lecex/socialite/proto/user"
 
 	db "github.com/lecex/socialite/providers/database"
+	"github.com/lecex/socialite/providers/redis"
 	"github.com/lecex/socialite/service/repository"
 	"github.com/lecex/socialite/service/socialite"
 )
+
+// 默认过期时间
+var expireTime time.Duration = 30
 
 // Socialite 社会登录
 type Socialite struct {
@@ -29,15 +34,22 @@ type Socialite struct {
 func (srv *Socialite) Auth(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	var users []*pb.User
 	var oauthID string
+	var content map[string]interface{}
 	socialite := req.Socialite
 	switch socialite.Driver {
 	case "miniprogram_wechat":
-		oauthID, err = srv.miniprogramWechat(socialite.Code)
+		oauthID, content, err = srv.miniprogramWechat(socialite.Code)
 	case "wechat":
+		oauthID, content, err = srv.wechat(socialite.Code)
 	default:
 		err = fmt.Errorf("不支持 %s 登录", socialite.Driver)
 	}
+	fmt.Println(content)
 	if oauthID != "" {
+		// 保存第三方相关请求数据用于注册绑定用户
+		res.Uuid = uuid.NewV4().String()
+		err = redis.SetNX(res.Uuid, content, expireTime*time.Minute).Err()
+		// 获取相关用户信息
 		users, err = srv.getBuildUser(oauthID, socialite.Driver, req.User)
 	} else {
 		err = fmt.Errorf("获取授权用户 Id 失败")
@@ -52,53 +64,53 @@ func (srv *Socialite) getBuildUser(oauthID string, origin string, user *pb.User)
 		OauthId: oauthID,
 		Origin:  origin,
 	}
-	if !srv.Repo.Exist(u) {
+	if srv.Repo.Exist(u) {
+		// 获取所有关联用户
+		socialiteUser, err := srv.Repo.Get(u)
+		if err != nil {
+			return nil, err
+		}
+		// 获取关联用户token
+		for _, user := range socialiteUser.Users {
+			// 无用户先通过用户服务创建用户
+			req := &authSrvPB.Request{
+				User: &authSrvPB.User{
+					Id: user.Id,
+				},
+			}
+			res := &authSrvPB.Response{}
+			err = client.Call(context.TODO(), srv.ServiceName, "Auth.AuthById", req, res)
+			if err != nil {
+				return nil, err
+			}
+			users = append(users, &pb.User{
+				Id:    user.Id,
+				Name:  user.Name,
+				Token: res.Token,
+			})
+		}
 		// 无用户先通过用户服务创建用户
-		req := &userSrvPB.Request{
-			User: &userSrvPB.User{
-				Name:     user.Name,
-				Avatar:   user.Avatar,
-				Origin:   u.Origin,
-				Password: srv.getRandomString(16), // 密码默认为 16 位随机数
-			},
-		}
-		res := &userSrvPB.Response{}
-		err = client.Call(context.TODO(), srv.ServiceName, "Users.Create", req, res)
-		if err != nil {
-			return nil, err
-		}
-		u.Users = append(u.Users, &userPB.User{
-			Id:   res.User.Id,
-			Name: res.User.Name,
-		})
-		_, err = srv.Repo.Create(u)
-		if err != nil {
-			return nil, err
-		}
-	}
-	// 获取所有关联用户
-	socialiteUser, err := srv.Repo.Get(u)
-	if err != nil {
-		return nil, err
-	}
-	// 获取关联用户token
-	for _, user := range socialiteUser.Users {
-		// 无用户先通过用户服务创建用户
-		req := &authSrvPB.Request{
-			User: &authSrvPB.User{
-				Id: user.Id,
-			},
-		}
-		res := &authSrvPB.Response{}
-		err = client.Call(context.TODO(), srv.ServiceName, "Auth.AuthById", req, res)
-		if err != nil {
-			return nil, err
-		}
-		users = append(users, &pb.User{
-			Id:    user.Id,
-			Name:  user.Name,
-			Token: res.Token,
-		})
+		// req := &userSrvPB.Request{
+		// 	User: &userSrvPB.User{
+		// 		Name:     user.Name,
+		// 		Avatar:   user.Avatar,
+		// 		Origin:   u.Origin,
+		// 		Password: srv.getRandomString(16), // 密码默认为 16 位随机数
+		// 	},
+		// }
+		// res := &userSrvPB.Response{}
+		// err = client.Call(context.TODO(), srv.ServiceName, "Users.Create", req, res)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		// u.Users = append(u.Users, &userPB.User{
+		// 	Id:   res.User.Id,
+		// 	Name: res.User.Name,
+		// })
+		// _, err = srv.Repo.Create(u)
+		// if err != nil {
+		// 	return nil, err
+		// }
 	}
 	return users, nil
 }
@@ -112,7 +124,7 @@ func (srv *Socialite) getConfig() (*conPB.Config, error) {
 }
 
 // 微信小程序 获取 oauthID
-func (srv *Socialite) miniprogramWechat(code string) (oauthID string, err error) {
+func (srv *Socialite) miniprogramWechat(code string) (oauthID string, req mxj.Map, err error) {
 	con, err := srv.getConfig()
 	if err != nil {
 		return
@@ -121,7 +133,33 @@ func (srv *Socialite) miniprogramWechat(code string) (oauthID string, err error)
 		AppId:  con.MiniprogramWechat.AppId,
 		Secret: con.MiniprogramWechat.Secret,
 	}
-	req, err := m.Code2Session(code)
+	req, err = m.Code2Session(code)
+	if err != nil {
+		return
+	}
+	if _, ok := req["errmsg"]; ok {
+		err = fmt.Errorf(req["errmsg"].(string))
+	}
+	if _, ok := req["openid"]; ok {
+		oauthID = req["openid"].(string)
+	}
+	if _, ok := req["unionid"]; ok {
+		oauthID = req["unionid"].(string)
+	}
+	return
+}
+
+// wechat 微信获取 oauthID
+func (srv *Socialite) wechat(code string) (oauthID string, req mxj.Map, err error) {
+	con, err := srv.getConfig()
+	if err != nil {
+		return
+	}
+	m := &socialite.Wechat{
+		AppId:  con.Wechat.AppId,
+		Secret: con.Wechat.Secret,
+	}
+	req, err = m.Oauth2(code)
 	if err != nil {
 		return
 	}
