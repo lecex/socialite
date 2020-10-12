@@ -36,6 +36,7 @@ func socialiteUser() {
 			id varchar(36) NOT NULL,
 			origin varchar(64) DEFAULT NULL,
 			oauth_id varchar(64) DEFAULT NULL,
+			content json DEFAULT NULL COMMENT '请求返回内容',
 			created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY (id),
@@ -52,7 +53,6 @@ func user() {
 		db.DB.Exec(`
 			CREATE TABLE users (
 			id varchar(36) NOT NULL,
-			name varchar(64) DEFAULT NULL,
 			socialite_user_id varchar(36) NOT NULL,
 			PRIMARY KEY (id)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -19,22 +19,33 @@ message Socialite {
     string callback = 4;
 }
 
-message Request {
-    Socialite socialite = 1;
-    string uuid = 2; // 1、授权未注册用户返回唯一识别标识，用于下次注册获取用户相关信息
-    User user = 3;
-}
-
 message User {
     string id = 1;
-    string name = 2;
-    string avatar = 3;
-    string token = 4;
+    string username = 2;
+    string mobile = 3;
+    string email = 4;
+    string password = 5;
+    string name = 6;
+    string avatar = 7;
+    string token = 8;
+}
+
+message SocialiteUser {
+    string id = 1;
+    string oauth_id = 2;
+    string origin = 3;
+    string content = 4;
+    repeated User users = 5;
+}
+
+
+message Request {
+    Socialite socialite = 1;
+    SocialiteUser socialite_user = 2;
 }
 
 message Response {
     bool valid = 1;
-    repeated User users = 2;
-    string uuid = 3;
-    string url = 4;
+    SocialiteUser socialite_user = 2;
+    string url = 3;
 }

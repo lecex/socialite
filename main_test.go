@@ -9,6 +9,8 @@ import (
 
 	"github.com/lecex/socialite/config"
 	"github.com/lecex/socialite/handler"
+
+	// conPB "github.com/lecex/socialite/proto/config"
 	socialPB "github.com/lecex/socialite/proto/socialite"
 	_ "github.com/lecex/socialite/providers/migrations" // 执行数据迁移
 	"github.com/lecex/socialite/service/repository"
@@ -33,16 +35,10 @@ var Conf = config.Conf
 // }
 
 func TestSocialiteAuth(t *testing.T) {
-
-	fmt.Println(Conf)
 	req := &socialPB.Request{
 		Socialite: &socialPB.Socialite{
 			Driver: "miniprogram_wechat",
-			Code:   "0916Z0200rFapK1r8L200UhLrY36Z02K",
-		},
-		User: &socialPB.User{
-			Name:   "BigRocs",
-			Avatar: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep1m5aI7y3WJAP6XIXN4e39124xvcjJoI9AM8QXjB9jN6VJpl3C32VNeXELnB71EWk8sE7zp32n4A/132",
+			Code:   "0914TD000B1drK1M73000dW94N34TD02",
 		},
 	}
 	res := &socialPB.Response{}
@@ -51,5 +47,30 @@ func TestSocialiteAuth(t *testing.T) {
 		Conf.Service["user"],
 	}
 	err := h.Auth(context.TODO(), req, res)
-	fmt.Println("--------", req, res, err)
+	fmt.Println("----Auth----", res, err)
+}
+
+func TestSocialiteRegister(t *testing.T) {
+	req := &socialPB.Request{
+		SocialiteUser: &socialPB.SocialiteUser{
+			Id: "a19b82c1-8321-49b6-9d2e-97cd63226288",
+			Users: []*socialPB.User{
+				&socialPB.User{
+					Username: "bvbv011",
+					Mobile:   "19054386521",
+					Email:    "bigrocs1@qq.com",
+					Password: "123456",
+					Name:     "BigRocs",
+					Avatar:   "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep1m5aI7y3WJAP6XIXN4e39124xvcjJoI9AM8QXjB9jN6VJpl3C32VNeXELnB71EWk8sE7zp32n4A/132",
+				},
+			},
+		},
+	}
+	res := &socialPB.Response{}
+	h := handler.Socialite{
+		&repository.UserRepository{db.DB},
+		Conf.Service["user"],
+	}
+	err := h.Register(context.TODO(), req, res)
+	fmt.Println("---Register---", req, "||", res, err)
 }

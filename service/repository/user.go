@@ -60,7 +60,7 @@ func (repo *UserRepository) Get(socialiteUser *pb.SocialiteUser) (*pb.SocialiteU
 		if err := repo.DB.Model(&socialiteUser).Where("id = ?", socialiteUser.Id).Find(&socialiteUser).Error; err != nil {
 			return nil, err
 		}
-		if err := repo.DB.Model(&socialiteUser).Related(users).Error; err != nil {
+		if err := repo.DB.Model(&socialiteUser).Related(&users).Error; err != nil {
 			if err.Error() != "record not found" {
 				return nil, err
 			}
@@ -98,11 +98,10 @@ func (repo *UserRepository) Create(user *pb.SocialiteUser) (*pb.SocialiteUser, e
 
 // Update 更新用户
 func (repo *UserRepository) Update(user *pb.SocialiteUser) (bool, error) {
-	if user.Id == "" {
-		return false, fmt.Errorf("请传入更新id")
-	}
 	id := &pb.SocialiteUser{
-		Id: user.Id,
+		Id:      user.Id,
+		Origin:  user.Origin,
+		OauthId: user.OauthId,
 	}
 	err := repo.DB.Model(id).Updates(user).Error
 	if err != nil {
