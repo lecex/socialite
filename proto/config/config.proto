@@ -27,14 +27,10 @@ message Config{
 message Wechat{
     string app_id = 1;
     string secret = 2;
-    string access_token = 3;     // 微信凭据
-    string validity_time = 4;    // token 有效时间
 }
 
 message MiniprogramWechat{
     string app_id = 1;           // 小程序
     string secret = 2;          // 小程序
-    string access_token = 3;     // 微信凭据
-    string validity_time = 4;    // token 有效时间
 }
 

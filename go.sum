@@ -322,6 +322,7 @@ github.com/google/btree v1.0.0/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
+github.com/google/go-cmp v0.4.0 h1:xsAVV57WRhGj6kEIi8ReJzQlHHqcBYCElAvkovg3B/4=
 github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-github v17.0.0+incompatible/go.mod h1:zLgOLi98H3fifZn+44m+umXrS52loVEgC2AApnigrVQ=
 github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
@@ -484,6 +485,8 @@ github.com/lecex/core v1.0.38 h1:UB9UQoPPjyi1IkNu90Ptfq2fH8dGYaq+Kq6CseQm+Bg=
 github.com/lecex/core v1.0.38/go.mod h1:i6HF5li+t++4t7TGT+tQ6qwBSfS+7jNnrBvgMqGwXnA=
 github.com/lecex/pay v1.2.9 h1:BMVhzKiODiqNRkqkFcLu6pnXeJY7lto7641iBXPyh/Y=
 github.com/lecex/pay v1.2.9/go.mod h1:D6phEC2SfhQjdkYwK+1MHfBczCi7XwEyiiiOG9uKPwU=
+github.com/lecex/pay-api v1.2.12 h1:hlg2IK04qJqSDCF9K5/0LhoWk3fV/eV8UncUv7nr2j0=
+github.com/lecex/pay-api v1.2.12/go.mod h1:hYr8+3i72EGJuz/JjwoBa+d0XQwWYPhkA4iONkrDeoA=
 github.com/lecex/socialite v1.0.36/go.mod h1:4PulbsnnQ5dmPwn8cdwvHqruwabys6QkkCk3Wf7Bg+o=
 github.com/lecex/user v1.2.5/go.mod h1:kXhuP0W3MFA+bN9B+0osT+Fq1QHo4OMp2O8G0kiukak=
 github.com/lecex/user v1.2.6/go.mod h1:AkkaQ0GI1z7K/Ybyw01LZ8boXCUs6F9Z/ghy4bZFiak=
