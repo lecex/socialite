@@ -115,6 +115,7 @@ github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
+github.com/bigrocs/alipay v1.0.5 h1:tx8tGhSn+cOKTrZxGhum6y8REZcNJCiGgTMv/qASx18=
 github.com/bigrocs/alipay v1.0.5/go.mod h1:w1kYCMJjXA2MqF2l/bVBphcGY4DD8ZDLHPuD8IfmUwQ=
 github.com/bigrocs/wechat v1.0.8/go.mod h1:x3RC61QP799yHh+KpccRtCu488w5LvxGx9pz2rrQY58=
 github.com/bigrocs/wechat v1.0.11 h1:4vygwSlYPvXxHpxtaya+RhYRvmUtPKbnXN/MKAndkkg=
@@ -488,6 +489,8 @@ github.com/lecex/pay v1.2.9/go.mod h1:D6phEC2SfhQjdkYwK+1MHfBczCi7XwEyiiiOG9uKPw
 github.com/lecex/pay-api v1.2.12 h1:hlg2IK04qJqSDCF9K5/0LhoWk3fV/eV8UncUv7nr2j0=
 github.com/lecex/pay-api v1.2.12/go.mod h1:hYr8+3i72EGJuz/JjwoBa+d0XQwWYPhkA4iONkrDeoA=
 github.com/lecex/socialite v1.0.36/go.mod h1:4PulbsnnQ5dmPwn8cdwvHqruwabys6QkkCk3Wf7Bg+o=
+github.com/lecex/socialite-api v0.0.0-20201022032317-d611f1661931 h1:PpsRWf09EMl9olN2clnVMivO7qtD6K339x5sjAjKhsw=
+github.com/lecex/socialite-api v0.0.0-20201022032317-d611f1661931/go.mod h1:ULNUueg0e4PzkOkwDfTVNXYh/DmturxB4tWmvGPGXqo=
 github.com/lecex/user v1.2.5/go.mod h1:kXhuP0W3MFA+bN9B+0osT+Fq1QHo4OMp2O8G0kiukak=
 github.com/lecex/user v1.2.6/go.mod h1:AkkaQ0GI1z7K/Ybyw01LZ8boXCUs6F9Z/ghy4bZFiak=
 github.com/lecex/user v1.2.12 h1:+7tpPhilZp8dnjE46P1g0JoWg5CRgfvi/f2M19eRNKY=
@@ -745,6 +748,7 @@ github.com/satori/go.uuid v1.2.0/go.mod h1:dA0hQrYB0VpLJoorglMZABFdXlWrHn1NEOzdh
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
 github.com/serenize/snaker v0.0.0-20171204205717-a683aaf2d516/go.mod h1:Yow6lPLSAXx2ifx470yD/nUe22Dv5vBvxK/UK9UUTVs=
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
+github.com/shopspring/decimal v0.0.0-20200227202807-02e2044944cc h1:jUIKcSPO9MoMJBbEoyE/RJoE8vz7Mb8AjvifMMwSyvY=
 github.com/shopspring/decimal v0.0.0-20200227202807-02e2044944cc/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
 github.com/shurcooL/component v0.0.0-20170202220835-f88ec8f54cc4/go.mod h1:XhFIlyj5a1fBNx5aJTbKoIq0mNaPvOagO+HjB3EtxrY=
 github.com/shurcooL/events v0.0.0-20181021180414-410e4ca65f48/go.mod h1:5u70Mqkb5O5cxEA8nxTsgrgLehJeAw6Oc4Ab1c/P1HM=

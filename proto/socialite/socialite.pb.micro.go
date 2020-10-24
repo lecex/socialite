@@ -36,10 +36,9 @@ var _ server.Option
 type SocialitesService interface {
 	// 小程序获取授权
 	Auth(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
-	Register(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
+	// rpc Register(Request) returns (Response) {} // 授权后注册【可用于增加新账号】
 	// 授权网址
 	AuthURL(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
-	Handle(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 }
 
 type socialitesService struct {
@@ -64,28 +63,8 @@ func (c *socialitesService) Auth(ctx context.Context, in *Request, opts ...clien
 	return out, nil
 }
 
-func (c *socialitesService) Register(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "Socialites.Register", in)
-	out := new(Response)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *socialitesService) AuthURL(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
 	req := c.c.NewRequest(c.name, "Socialites.AuthURL", in)
-	out := new(Response)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *socialitesService) Handle(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "Socialites.Handle", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -99,18 +78,15 @@ func (c *socialitesService) Handle(ctx context.Context, in *Request, opts ...cli
 type SocialitesHandler interface {
 	// 小程序获取授权
 	Auth(context.Context, *Request, *Response) error
-	Register(context.Context, *Request, *Response) error
+	// rpc Register(Request) returns (Response) {} // 授权后注册【可用于增加新账号】
 	// 授权网址
 	AuthURL(context.Context, *Request, *Response) error
-	Handle(context.Context, *Request, *Response) error
 }
 
 func RegisterSocialitesHandler(s server.Server, hdlr SocialitesHandler, opts ...server.HandlerOption) error {
 	type socialites interface {
 		Auth(ctx context.Context, in *Request, out *Response) error
-		Register(ctx context.Context, in *Request, out *Response) error
 		AuthURL(ctx context.Context, in *Request, out *Response) error
-		Handle(ctx context.Context, in *Request, out *Response) error
 	}
 	type Socialites struct {
 		socialites
@@ -127,14 +103,6 @@ func (h *socialitesHandler) Auth(ctx context.Context, in *Request, out *Response
 	return h.SocialitesHandler.Auth(ctx, in, out)
 }
 
-func (h *socialitesHandler) Register(ctx context.Context, in *Request, out *Response) error {
-	return h.SocialitesHandler.Register(ctx, in, out)
-}
-
 func (h *socialitesHandler) AuthURL(ctx context.Context, in *Request, out *Response) error {
 	return h.SocialitesHandler.AuthURL(ctx, in, out)
-}
-
-func (h *socialitesHandler) Handle(ctx context.Context, in *Request, out *Response) error {
-	return h.SocialitesHandler.Handle(ctx, in, out)
 }

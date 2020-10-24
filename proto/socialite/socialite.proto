@@ -5,10 +5,9 @@ package socialite;
 service Socialites {
     // 小程序获取授权
     rpc Auth(Request) returns (Response) {}
-    rpc Register(Request) returns (Response) {} // 授权后注册【可用于增加新账号】
+    // rpc Register(Request) returns (Response) {} // 授权后注册【可用于增加新账号】
     // 授权网址
     rpc AuthURL(Request) returns (Response) {}
-    rpc Handle(Request) returns (Response) {}
 }
 
 

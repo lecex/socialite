@@ -30,8 +30,8 @@ message Request {
 }
 
 message Response {
-    User user = 1;
-    repeated User users = 2;
+    SocialiteUser socialite_user = 1;
+    repeated SocialiteUser socialite_users = 2;
     int64 total = 3;
     bool valid = 4;
 }
