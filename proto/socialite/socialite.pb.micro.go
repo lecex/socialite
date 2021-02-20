@@ -39,6 +39,8 @@ type SocialitesService interface {
 	// rpc Register(Request) returns (Response) {} // 授权后注册【可用于增加新账号】
 	// 授权网址
 	AuthURL(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
+	// 绑定用户
+	BuildUser(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 }
 
 type socialitesService struct {
@@ -73,6 +75,16 @@ func (c *socialitesService) AuthURL(ctx context.Context, in *Request, opts ...cl
 	return out, nil
 }
 
+func (c *socialitesService) BuildUser(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Socialites.BuildUser", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for Socialites service
 
 type SocialitesHandler interface {
@@ -81,12 +93,15 @@ type SocialitesHandler interface {
 	// rpc Register(Request) returns (Response) {} // 授权后注册【可用于增加新账号】
 	// 授权网址
 	AuthURL(context.Context, *Request, *Response) error
+	// 绑定用户
+	BuildUser(context.Context, *Request, *Response) error
 }
 
 func RegisterSocialitesHandler(s server.Server, hdlr SocialitesHandler, opts ...server.HandlerOption) error {
 	type socialites interface {
 		Auth(ctx context.Context, in *Request, out *Response) error
 		AuthURL(ctx context.Context, in *Request, out *Response) error
+		BuildUser(ctx context.Context, in *Request, out *Response) error
 	}
 	type Socialites struct {
 		socialites
@@ -105,4 +120,8 @@ func (h *socialitesHandler) Auth(ctx context.Context, in *Request, out *Response
 
 func (h *socialitesHandler) AuthURL(ctx context.Context, in *Request, out *Response) error {
 	return h.SocialitesHandler.AuthURL(ctx, in, out)
+}
+
+func (h *socialitesHandler) BuildUser(ctx context.Context, in *Request, out *Response) error {
+	return h.SocialitesHandler.BuildUser(ctx, in, out)
 }

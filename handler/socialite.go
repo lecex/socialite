@@ -3,8 +3,6 @@ package handler
 import (
 	"context"
 	"fmt"
-	"math/rand"
-	"time"
 
 	"github.com/clbanning/mxj"
 	// client "github.com/lecex/core/client"
@@ -50,50 +48,6 @@ func (srv *Socialite) Auth(ctx context.Context, req *pb.Request, res *pb.Respons
 	return err
 }
 
-// Register 注册
-// func (srv *Socialite) Register(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
-// 	u := &userPB.SocialiteUser{
-// 		Id: req.SocialiteUser.Id,
-// 	}
-// 	// 获取所有关联用户
-// 	u, err = srv.Repo.Get(u)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	if len(req.SocialiteUser.Users) > 0 {
-// 		for _, user := range req.SocialiteUser.Users {
-// 			// 无用户先通过用户服务创建用户
-// 			reqUserSrv := &userSrvPB.Request{
-// 				User: &userSrvPB.User{
-// 					Username: user.Username,
-// 					Mobile:   user.Mobile,
-// 					Email:    user.Email,
-// 					Password: user.Password,
-// 					Name:     user.Name,
-// 					Avatar:   user.Avatar,
-// 				},
-// 			}
-// 			resUserSrv := &userSrvPB.Response{}
-// 			err = client.Call(context.TODO(), srv.ServiceName, "Users.Create", reqUserSrv, resUserSrv)
-// 			if err != nil {
-// 				return err
-// 			}
-// 			if resUserSrv.Valid {
-// 				u.Users = append(u.Users, &userPB.User{
-// 					Id: resUserSrv.User.Id,
-// 				})
-// 			}
-// 		}
-// 	} else {
-// 		err = fmt.Errorf("未收到用户注册信息")
-// 	}
-// 	u.CreatedAt = ""
-// 	u.UpdatedAt = ""
-// 	_, err = srv.Repo.Update(u)
-// 	fmt.Println("---Register---", u)
-// 	return err
-// }
-
 // AuthURL 授权网址
 func (srv *Socialite) AuthURL(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	return err
@@ -131,20 +85,8 @@ func (srv *Socialite) getSocialiteUser(content mxj.Map, origin string) (socialit
 	}
 	// 获取关联用户token
 	for _, user := range u.Users {
-		// reqAuthSrv := &authSrvPB.Request{
-		// 	User: &authSrvPB.User{
-		// 		Id: user.Id,
-		// 	},
-		// }
-		// resAuthSrv := &authSrvPB.Response{}
-		// err = client.Call(context.TODO(), srv.ServiceName, "Auth.AuthById", reqAuthSrv, resAuthSrv)
-		// if err != nil {
-		// 	return nil, err
-		// }
 		socialiteUser.Users = append(socialiteUser.Users, &pb.User{
 			Id: user.Id,
-			// Name:  resAuthSrv.User.Name,
-			// Token: resAuthSrv.Token,
 		})
 	}
 	return socialiteUser, nil
@@ -217,14 +159,23 @@ func (srv *Socialite) wechat(code string) (req mxj.Map, err error) {
 	return
 }
 
-// getRandomString 生成随机字符串
-func (srv *Socialite) getRandomString(length int64) string {
-	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	bytes := []byte(str)
-	result := []byte{}
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for i := 0; int64(i) < length; i++ {
-		result = append(result, bytes[r.Intn(len(bytes))])
+// BuildUser 绑定用户
+// Auth 登录授权
+func (srv *Socialite) BuildUser(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	u := &userPB.SocialiteUser{
+		Id: req.SocialiteUser.Id,
+		Users: []*userPB.User{
+			{
+				Id:              req.SocialiteUser.Users[0].Id,
+				SocialiteUserId: req.SocialiteUser.Id,
+			},
+		},
 	}
-	return string(result)
+	_, err = srv.Repo.Update(u)
+	if err != nil {
+		res.Valid = false
+		return err
+	}
+	res.Valid = true
+	return
 }

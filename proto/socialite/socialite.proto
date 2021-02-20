@@ -8,6 +8,8 @@ service Socialites {
     // rpc Register(Request) returns (Response) {} // 授权后注册【可用于增加新账号】
     // 授权网址
     rpc AuthURL(Request) returns (Response) {}
+    // 绑定用户
+    rpc BuildUser(Request) returns (Response) {}
 }
 
 

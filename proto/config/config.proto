@@ -20,7 +20,7 @@ message Response {
 
 message Config{
     Wechat wechat = 1;
-    MiniprogramWechat miniprogram_wechat = 2;               // 短信配置
+    MiniprogramWechat miniprogram_wechat = 2;               // 微信配置
 }
 
 
