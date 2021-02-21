@@ -271,6 +271,8 @@ github.com/lecex/core v1.0.31/go.mod h1:xjv4WGSLvs3ZKOgdGaxND8RXuMEVsASPTZY9umOE
 github.com/lecex/core v1.0.33/go.mod h1:xjv4WGSLvs3ZKOgdGaxND8RXuMEVsASPTZY9umOE6U0=
 github.com/lecex/core v1.1.1 h1:Zshz0vyAEEisNbOq0WlSiMUXn5iDP09+KNc+LDm6EvA=
 github.com/lecex/core v1.1.1/go.mod h1:0997q8CCNlkeJur/hjyVSY2EXgYd4TznkvcFP2f+VTE=
+github.com/lecex/core v1.1.2 h1:ehX1HUdEfkQRag4ELBLyT/HShaQAE0bkiLYkUI4755c=
+github.com/lecex/core v1.1.2/go.mod h1:0997q8CCNlkeJur/hjyVSY2EXgYd4TznkvcFP2f+VTE=
 github.com/lecex/pay v1.2.9/go.mod h1:D6phEC2SfhQjdkYwK+1MHfBczCi7XwEyiiiOG9uKPwU=
 github.com/lecex/socialite v1.0.36/go.mod h1:4PulbsnnQ5dmPwn8cdwvHqruwabys6QkkCk3Wf7Bg+o=
 github.com/lecex/socialite-api v0.0.0-20210220084359-080308cd0f4c h1:LboluAISdky5Koq9oro6ObaECOH3DCjdPRSMopZHGcg=
