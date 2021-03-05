@@ -104,6 +104,7 @@ func (repo *UserRepository) Update(user *pb.SocialiteUser) (bool, error) {
 		OauthId: user.OauthId,
 	}
 	u := &pb.SocialiteUser{
+		Id:      user.Id,
 		Content: user.Content,
 		Users:   user.Users,
 	}

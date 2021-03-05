@@ -11,9 +11,11 @@ import (
 	"github.com/lecex/socialite/handler"
 
 	// conPB "github.com/lecex/socialite/proto/config"
-	socialPB "github.com/lecex/socialite/proto/socialite"
+
 	_ "github.com/lecex/socialite/providers/migrations" // 执行数据迁移
 	"github.com/lecex/socialite/service/repository"
+
+	socialPB "github.com/lecex/socialite/proto/socialite"
 )
 
 var Conf = config.Conf
@@ -38,7 +40,7 @@ func TestSocialiteAuth(t *testing.T) {
 	req := &socialPB.Request{
 		Socialite: &socialPB.Socialite{
 			Driver: "miniprogram_wechat",
-			Code:   "021A9MGa12NoDA0b0PGa1Kwm0E3A9MGl",
+			Code:   "001Cf9000kAQhL1YMF1000C39v1Cf90k",
 		},
 	}
 	res := &socialPB.Response{}
@@ -50,27 +52,22 @@ func TestSocialiteAuth(t *testing.T) {
 	fmt.Println("----Auth----", res, err)
 }
 
-func TestSocialiteRegister(t *testing.T) {
-	// req := &socialPB.Request{
-	// 	SocialiteUser: &socialPB.SocialiteUser{
-	// 		Id: "a19b82c1-8321-49b6-9d2e-97cd63226288",
-	// 		Users: []*socialPB.User{
-	// 			&socialPB.User{
-	// 				Username: "bvbv011",
-	// 				Mobile:   "19054386521",
-	// 				Email:    "bigrocs1@qq.com",
-	// 				Password: "123456",
-	// 				Name:     "BigRocs",
-	// 				Avatar:   "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep1m5aI7y3WJAP6XIXN4e39124xvcjJoI9AM8QXjB9jN6VJpl3C32VNeXELnB71EWk8sE7zp32n4A/132",
-	// 			},
-	// 		},
-	// 	},
-	// }
-	// res := &socialPB.Response{}
-	// h := handler.Socialite{
-	// 	&repository.UserRepository{db.DB},
-	// 	Conf.Service["user"],
-	// }
-	// err := h.Register(context.TODO(), req, res)
-	// fmt.Println("---Register---", req, "||", res, err)
-}
+// func TestSocialiteBuildUser(t *testing.T) {
+// 	req := &socialPB.Request{
+// 		SocialiteUser: &socialPB.SocialiteUser{
+// 			Id: "e39d3d2f-a978-4a70-8683-b53379e52ec1",
+// 			Users: []*socialPB.User{
+// 				{
+// 					Id: "c9d7a398-4d59-480e-b435-469365307f8c",
+// 				},
+// 			},
+// 		},
+// 	}
+// 	res := &socialPB.Response{}
+// 	h := handler.Socialite{
+// 		&repository.UserRepository{db.DB},
+// 		Conf.Service["user"],
+// 	}
+// 	err := h.BuildUser(context.TODO(), req, res)
+// 	fmt.Println("---Register---", req, "||", res, err)
+// }
