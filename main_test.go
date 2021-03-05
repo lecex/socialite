@@ -38,7 +38,7 @@ func TestSocialiteAuth(t *testing.T) {
 	req := &socialPB.Request{
 		Socialite: &socialPB.Socialite{
 			Driver: "miniprogram_wechat",
-			Code:   "0914TD000B1drK1M73000dW94N34TD02",
+			Code:   "021A9MGa12NoDA0b0PGa1Kwm0E3A9MGl",
 		},
 	}
 	res := &socialPB.Response{}
@@ -51,26 +51,26 @@ func TestSocialiteAuth(t *testing.T) {
 }
 
 func TestSocialiteRegister(t *testing.T) {
-	req := &socialPB.Request{
-		SocialiteUser: &socialPB.SocialiteUser{
-			Id: "a19b82c1-8321-49b6-9d2e-97cd63226288",
-			Users: []*socialPB.User{
-				&socialPB.User{
-					Username: "bvbv011",
-					Mobile:   "19054386521",
-					Email:    "bigrocs1@qq.com",
-					Password: "123456",
-					Name:     "BigRocs",
-					Avatar:   "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep1m5aI7y3WJAP6XIXN4e39124xvcjJoI9AM8QXjB9jN6VJpl3C32VNeXELnB71EWk8sE7zp32n4A/132",
-				},
-			},
-		},
-	}
-	res := &socialPB.Response{}
-	h := handler.Socialite{
-		&repository.UserRepository{db.DB},
-		Conf.Service["user"],
-	}
-	err := h.Register(context.TODO(), req, res)
-	fmt.Println("---Register---", req, "||", res, err)
+	// req := &socialPB.Request{
+	// 	SocialiteUser: &socialPB.SocialiteUser{
+	// 		Id: "a19b82c1-8321-49b6-9d2e-97cd63226288",
+	// 		Users: []*socialPB.User{
+	// 			&socialPB.User{
+	// 				Username: "bvbv011",
+	// 				Mobile:   "19054386521",
+	// 				Email:    "bigrocs1@qq.com",
+	// 				Password: "123456",
+	// 				Name:     "BigRocs",
+	// 				Avatar:   "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep1m5aI7y3WJAP6XIXN4e39124xvcjJoI9AM8QXjB9jN6VJpl3C32VNeXELnB71EWk8sE7zp32n4A/132",
+	// 			},
+	// 		},
+	// 	},
+	// }
+	// res := &socialPB.Response{}
+	// h := handler.Socialite{
+	// 	&repository.UserRepository{db.DB},
+	// 	Conf.Service["user"],
+	// }
+	// err := h.Register(context.TODO(), req, res)
+	// fmt.Println("---Register---", req, "||", res, err)
 }

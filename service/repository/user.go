@@ -103,9 +103,7 @@ func (repo *UserRepository) Update(user *pb.SocialiteUser) (bool, error) {
 		Origin:  user.Origin,
 		OauthId: user.OauthId,
 	}
-	user.Origin = ""
-	user.OauthId = ""
-	err := repo.DB.Model(id).Updates(user).Error
+	err := repo.DB.Model(id).Update("content", user.Content).Error
 	if err != nil {
 		log.Log(err)
 		return false, err
