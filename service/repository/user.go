@@ -98,9 +98,10 @@ func (repo *UserRepository) Create(user *pb.SocialiteUser) (*pb.SocialiteUser, e
 
 // Update 更新用户
 func (repo *UserRepository) Update(user *pb.SocialiteUser) (bool, error) {
+	if user.OauthId == "" {
+		return false, fmt.Errorf("未找到用户OauthId")
+	}
 	id := &pb.SocialiteUser{
-		Id:      user.Id,
-		Origin:  user.Origin,
 		OauthId: user.OauthId,
 	}
 	u := &pb.SocialiteUser{
