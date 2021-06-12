@@ -17,6 +17,7 @@ type User interface {
 	Create(user *pb.SocialiteUser) (*pb.SocialiteUser, error)
 	Get(user *pb.SocialiteUser) (*pb.SocialiteUser, error)
 	Update(user *pb.SocialiteUser) (bool, error)
+	UpdateByOauthId(user *pb.SocialiteUser) (bool, error)
 	Delete(user *pb.SocialiteUser) (bool, error)
 }
 
