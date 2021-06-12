@@ -62,7 +62,7 @@ func (srv *Socialite) getSocialiteUser(content mxj.Map, origin string) (socialit
 		Content: string(c),
 	}
 	if srv.Repo.Exist(u) {
-		_, err = srv.Repo.Update(u)
+		_, err = srv.Repo.UpdateByOauthId(u)
 		if err != nil {
 			return nil, err
 		}

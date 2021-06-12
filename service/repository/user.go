@@ -98,6 +98,27 @@ func (repo *UserRepository) Create(user *pb.SocialiteUser) (*pb.SocialiteUser, e
 
 // Update 更新用户
 func (repo *UserRepository) Update(user *pb.SocialiteUser) (bool, error) {
+	if user.Id == "" {
+		return false, fmt.Errorf("未找到用户Id")
+	}
+	id := &pb.SocialiteUser{
+		Id: user.Id,
+	}
+	u := &pb.SocialiteUser{
+		Id:      user.Id,
+		Content: user.Content,
+		Users:   user.Users,
+	}
+	err := repo.DB.Model(id).Updates(u).Error
+	if err != nil {
+		log.Log(err)
+		return false, err
+	}
+	return true, nil
+}
+
+// Update 更新用户
+func (repo *UserRepository) UpdateByOauthId(user *pb.SocialiteUser) (bool, error) {
 	if user.OauthId == "" {
 		return false, fmt.Errorf("未找到用户OauthId")
 	}
