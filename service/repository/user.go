@@ -131,7 +131,7 @@ func (repo *UserRepository) UpdateByOauthId(user *pb.SocialiteUser) (bool, error
 		Content: user.Content,
 		Users:   user.Users,
 	}
-	err := repo.DB.Model(id).Updates(u).Error
+	err := repo.DB.Model(id).Where("oauth_id = ?", user.OauthId).Updates(u).Error
 	if err != nil {
 		log.Log(err)
 		return false, err
