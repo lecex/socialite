@@ -127,9 +127,9 @@ func (srv *Socialite) miniprogramWechat(code string) (req mxj.Map, err error) {
 	if _, ok := req["openid"]; ok {
 		req["oauthid"] = req["openid"]
 	}
-	if _, ok := req["unionid"]; ok {
-		req["oauthid"] = req["unionid"]
-	}
+	// if _, ok := req["unionid"]; ok {
+	// 	req["oauthid"] = req["unionid"]
+	// }
 	return
 }
 
@@ -153,9 +153,9 @@ func (srv *Socialite) wechat(code string) (req mxj.Map, err error) {
 	if _, ok := req["openid"]; ok {
 		req["oauthid"] = req["openid"]
 	}
-	if _, ok := req["unionid"]; ok {
-		req["oauthid"] = req["unionid"]
-	}
+	// if _, ok := req["unionid"]; ok {
+	// 	req["oauthid"] = req["unionid"]
+	// }
 	return
 }
 
