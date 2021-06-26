@@ -16,6 +16,7 @@ func Register(Server server.Server) {
 	configPB.RegisterConfigsHandler(Server, &Config{&repository.ConfigRepository{db.DB}})
 	socialitePB.RegisterSocialitesHandler(Server, &Socialite{
 		&repository.UserRepository{db.DB},
+		&repository.ConfigRepository{db.DB},
 		"user",
 	})
 	userPB.RegisterUsersHandler(Server, &User{
