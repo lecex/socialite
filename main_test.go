@@ -10,7 +10,7 @@ import (
 	"github.com/lecex/socialite/config"
 	"github.com/lecex/socialite/handler"
 
-	// conPB "github.com/lecex/socialite/proto/config"
+	conPB "github.com/lecex/socialite/proto/config"
 
 	_ "github.com/lecex/socialite/providers/migrations" // 执行数据迁移
 	"github.com/lecex/socialite/service/repository"
@@ -20,32 +20,35 @@ import (
 
 var Conf = config.Conf
 
-// func TestSocialiteConfigUpdate(t *testing.T) {
-// 	req := &conPB.Request{
-// 		Config: &conPB.Config{
-// 			MiniprogramWechat: &conPB.MiniprogramWechat{
-// 				AppId:  "wx15550c1a89d982c8",
-// 				Secret: "f9c11f183a5beb592ccd801298ff5533",
-// 			},
-// 		},
-// 	}
-// 	res := &conPB.Response{}
-// 	h := handler.Config{&repository.ConfigRepository{db.DB}}
-// 	err := h.Update(context.TODO(), req, res)
-// 	fmt.Println("--------")
-// 	t.Log(req, res, err)
-// }
+func TestSocialiteConfigUpdate(t *testing.T) {
+	req := &conPB.Request{
+		Config: &conPB.Config{
+			Name:         "微信小程序",
+			Driver:       "miniprogram_wechat",
+			ClientId:     "wx15550c1a89d982c8",
+			ClientSecret: "f9c11f183a5beb592ccd801298ff5533",
+			Status:       true,
+		},
+	}
+	res := &conPB.Response{}
+	h := handler.Config{&repository.ConfigRepository{db.DB}}
+	err := h.Create(context.TODO(), req, res)
+	fmt.Println("--------")
+	t.Log(req, res, err)
+}
 
 func TestSocialiteAuth(t *testing.T) {
 	req := &socialPB.Request{
 		Socialite: &socialPB.Socialite{
-			Driver: "miniprogram_wechat",
-			Code:   "001Cf9000kAQhL1YMF1000C39v1Cf90k",
+			Driver:   "miniprogram_wechat",
+			ClientId: "wx15550c1a89d982c8",
+			Code:     "051keH000YIkWL1ld5300T6JAP1keH0R",
 		},
 	}
 	res := &socialPB.Response{}
 	h := handler.Socialite{
 		&repository.UserRepository{db.DB},
+		&repository.ConfigRepository{db.DB},
 		Conf.Service["user"],
 	}
 	err := h.Auth(context.TODO(), req, res)

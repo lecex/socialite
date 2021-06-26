@@ -10,7 +10,6 @@ func init() {
 	config()
 	socialiteUser()
 	user()
-	seeds()
 }
 
 // config 配置数据迁移
@@ -19,16 +18,17 @@ func config() {
 	if !db.DB.HasTable(&config) {
 		db.DB.Exec(`
 			CREATE TABLE configs (
-			id int(11) unsigned NOT NULL AUTO_INCREMENT,
-			name varchar(32) NOT NULL COMMENT '驱动名称',
-			driver varchar(32) NOT NULL COMMENT '驱动标识',
-			client_id varchar(80) NOT NULL COMMENT '客户ID',
-			client_secret varchar(80) NOT NULL COMMENT '客户密钥',	
-			redirect varchar(180) NOT NULL COMMENT '回调地址',	
-			status tinyint(1) DEFAULT 0 COMMENT '状态',
-			created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-			PRIMARY KEY (id),
+				id int(11) unsigned NOT NULL AUTO_INCREMENT,
+				name varchar(32) NOT NULL COMMENT '驱动名称',
+				driver varchar(32) NOT NULL COMMENT '驱动标识',
+				client_id varchar(80) NOT NULL COMMENT '客户ID',
+				client_secret varchar(80) NOT NULL COMMENT '客户密钥',	
+				redirect varchar(180) NOT NULL COMMENT '回调地址',	
+				status tinyint(1) DEFAULT 0 COMMENT '状态',
+				created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				PRIMARY KEY (id),
+				UNIQUE KEY driver_and_client_id (driver,client_id)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		`)
 	}
@@ -65,11 +65,4 @@ func user() {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		`)
 	}
-}
-
-// seeds 填充文件
-func seeds() {
-	db.DB.Exec(`
-		INSERT INTO configs ( name ) VALUES ('config')
-	`)
 }

@@ -18,6 +18,7 @@ type User interface {
 	Get(user *pb.SocialiteUser) (*pb.SocialiteUser, error)
 	Update(user *pb.SocialiteUser) (bool, error)
 	UpdateByOauthId(user *pb.SocialiteUser) (bool, error)
+	UpdateById(user *pb.SocialiteUser) (bool, error)
 	Delete(user *pb.SocialiteUser) (bool, error)
 }
 
@@ -118,7 +119,7 @@ func (repo *UserRepository) Update(user *pb.SocialiteUser) (bool, error) {
 	return true, nil
 }
 
-// Update 更新用户
+// UpdateByOauthId 更新用户
 func (repo *UserRepository) UpdateByOauthId(user *pb.SocialiteUser) (bool, error) {
 	if user.OauthId == "" {
 		return false, fmt.Errorf("未找到用户OauthId")
@@ -132,6 +133,28 @@ func (repo *UserRepository) UpdateByOauthId(user *pb.SocialiteUser) (bool, error
 		Users:   user.Users,
 	}
 	err := repo.DB.Model(id).Where("oauth_id = ?", user.OauthId).Updates(u).Error
+	if err != nil {
+		log.Log(err)
+		return false, err
+	}
+	return true, nil
+}
+
+// Update 更新用户
+func (repo *UserRepository) UpdateById(user *pb.SocialiteUser) (bool, error) {
+	if user.Id == "" {
+		return false, fmt.Errorf("未找到用户Id")
+	}
+	id := &pb.SocialiteUser{
+		Id: user.Id,
+	}
+	u := &pb.SocialiteUser{
+		Id:      user.Id,
+		OauthId: user.OauthId,
+		Content: user.Content,
+		Users:   user.Users,
+	}
+	err := repo.DB.Model(id).Where("id = ?", user.Id).Updates(u).Error
 	if err != nil {
 		log.Log(err)
 		return false, err

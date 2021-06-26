@@ -132,7 +132,7 @@ func (srv *Socialite) miniprogramWechat(code string, con *conPB.Config) (req mxj
 				return nil, err
 			}
 			u.OauthId = req["unionid"].(string)
-			_, err = srv.Repo.Update(u)
+			_, err = srv.Repo.UpdateById(u)
 			if err != nil {
 				return nil, err
 			}
