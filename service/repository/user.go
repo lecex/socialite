@@ -145,16 +145,13 @@ func (repo *UserRepository) UpdateById(user *pb.SocialiteUser) (bool, error) {
 	if user.Id == "" {
 		return false, fmt.Errorf("未找到用户Id")
 	}
-	id := &pb.SocialiteUser{
-		Id: user.Id,
-	}
 	u := &pb.SocialiteUser{
 		Id:      user.Id,
 		OauthId: user.OauthId,
 		Content: user.Content,
 		Users:   user.Users,
 	}
-	err := repo.DB.Model(id).Where("id = ?", user.Id).Updates(u).Error
+	err := repo.DB.Where("id = ?", user.Id).Updates(u).Error
 	if err != nil {
 		log.Log(err)
 		return false, err
@@ -164,10 +161,10 @@ func (repo *UserRepository) UpdateById(user *pb.SocialiteUser) (bool, error) {
 
 // Delete 删除用户
 func (repo *UserRepository) Delete(user *pb.SocialiteUser) (bool, error) {
-	id := &pb.SocialiteUser{
-		Id: user.Id,
+	if user.Id == "" {
+		return false, fmt.Errorf("请传入更新id")
 	}
-	err := repo.DB.Delete(id).Error
+	err := repo.DB.Where("id = ?", user.Id).Delete(user).Error
 	if err != nil {
 		log.Log(err)
 		return false, err
