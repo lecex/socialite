@@ -102,7 +102,7 @@ func (repo *ConfigRepository) Update(p *pb.Config) (bool, error) {
 	if p.Id == 0 {
 		return false, fmt.Errorf("请传入更新id")
 	}
-	err := repo.DB.Where("id = ?", id.Id).Updates(p).Error
+	err := repo.DB.Where("id = ?", p.Id).Updates(p).Error
 	if err != nil {
 		log.Log(err)
 		return false, err
@@ -112,7 +112,7 @@ func (repo *ConfigRepository) Update(p *pb.Config) (bool, error) {
 
 // Delete 删除权限
 func (repo *ConfigRepository) Delete(p *pb.Config) (bool, error) {
-	if p.Id == "" {
+	if p.Id == 0 {
 		return false, fmt.Errorf("请传入更新id")
 	}
 	err := repo.DB.Where("id = ?", p.Id).Delete(p).Error
