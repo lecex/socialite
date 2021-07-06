@@ -20,6 +20,7 @@ type User interface {
 	UpdateByOauthId(user *pb.SocialiteUser) (bool, error)
 	UpdateById(user *pb.SocialiteUser) (bool, error)
 	Delete(user *pb.SocialiteUser) (bool, error)
+	DeleteRelatedUser(user *pb.User) (bool, error)
 }
 
 // UserRepository 用户仓库
@@ -164,6 +165,19 @@ func (repo *UserRepository) UpdateById(user *pb.SocialiteUser) (bool, error) {
 
 // Delete 删除用户
 func (repo *UserRepository) Delete(user *pb.SocialiteUser) (bool, error) {
+	if user.Id == "" {
+		return false, fmt.Errorf("请传入更新id")
+	}
+	err := repo.DB.Where("id = ?", user.Id).Delete(user).Error
+	if err != nil {
+		log.Log(err)
+		return false, err
+	}
+	return true, nil
+}
+
+// DeleteRelatedUser 删除关联用户信息
+func (repo *UserRepository) DeleteRelatedUser(user *pb.User) (bool, error) {
 	if user.Id == "" {
 		return false, fmt.Errorf("请传入更新id")
 	}
