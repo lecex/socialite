@@ -1,4 +1,10 @@
-FROM bigrocs/golang-gcc:1.13 as builder
+FROM bigrocs/golang-gcc:1.16 as builder
+
+ARG ACCES_STOKEN
+RUN apk add git
+RUN go env -w GOPRIVATE=github.com/lecex
+RUN git config --global url."https://bigrocs:${ACCES_STOKEN}@github.com".insteadOf "https://github.com"
+
 
 WORKDIR /go/src/github.com/lecex/socialite
 COPY . .
